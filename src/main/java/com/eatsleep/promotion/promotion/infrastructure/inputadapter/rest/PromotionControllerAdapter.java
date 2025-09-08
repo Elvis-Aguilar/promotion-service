@@ -42,7 +42,7 @@ public class PromotionControllerAdapter {
         return ResponseEntity.ok(dto);
     }
 
-    @GetMapping("/customer/{customerId}")
+    @GetMapping("/customers/{customerId}")
     public ResponseEntity<List<PromotionResponseDto>> getAllPromotionFindByCustomerId(@PathVariable UUID customerId){
         List<PromotionResponseDto> dtoList = listAllPromotionByCustomerIdInputPort.listAllPromotionByCustomerId(customerId)
                 .stream()
@@ -52,7 +52,7 @@ public class PromotionControllerAdapter {
         return ResponseEntity.ok().body(dtoList);
     }
 
-    @GetMapping("/room/{roomId}")
+    @GetMapping("/rooms/{roomId}")
     public ResponseEntity<List<PromotionResponseDto>> getAllPromotionFindByRoomId(@PathVariable UUID roomId){
         List<PromotionResponseDto> dtoList = listAllPromotionByRoomIdInputPort.listAllPromotionByRoomId(roomId)
                 .stream()
