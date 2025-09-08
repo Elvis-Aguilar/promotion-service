@@ -1,10 +1,7 @@
 package com.eatsleep.promotion.promotion.infrastructure.inputadapter.rest;
 
 import com.eatsleep.promotion.common.infrastructure.annotation.WebAdapter;
-import com.eatsleep.promotion.promotion.application.ports.input.CreatingPromotionInputPort;
-import com.eatsleep.promotion.promotion.application.ports.input.ListAllPromotionByCustomerIdInputPort;
-import com.eatsleep.promotion.promotion.application.ports.input.ListAllPromotionByDishesIdInputPort;
-import com.eatsleep.promotion.promotion.application.ports.input.ListAllPromotionByRoomIdInputPort;
+import com.eatsleep.promotion.promotion.application.ports.input.*;
 import com.eatsleep.promotion.promotion.application.usecases.CreatePromotionCaseDto;
 import com.eatsleep.promotion.promotion.infrastructure.inputadapter.dto.CreatPromotionRequestDto;
 import com.eatsleep.promotion.promotion.infrastructure.inputadapter.dto.PromotionResponseDto;
@@ -28,6 +25,7 @@ public class PromotionControllerAdapter {
     private final ListAllPromotionByCustomerIdInputPort listAllPromotionByCustomerIdInputPort;
     private final ListAllPromotionByRoomIdInputPort listAllPromotionByRoomIdInputPort;
     private final ListAllPromotionByDishesIdInputPort listAllPromotionByDishesIdInputPort;
+    private final FindingPromotionByIdInputPort findingPromotionByIdInputPort;
     private final PromotionRestMapper mapper;
 
     @PostMapping()
@@ -36,6 +34,12 @@ public class PromotionControllerAdapter {
         CreatePromotionCaseDto caseDto = dto.toCase();
         creatingPromotionInputPort.createPromotion(caseDto);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<PromotionResponseDto> getPromotionById(@PathVariable UUID id) {
+        PromotionResponseDto dto = mapper.toResponse(findingPromotionByIdInputPort.findPromotionById(id));
+        return ResponseEntity.ok(dto);
     }
 
     @GetMapping("/customer/{customerId}")

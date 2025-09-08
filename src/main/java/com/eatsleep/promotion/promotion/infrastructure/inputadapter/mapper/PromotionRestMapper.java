@@ -13,6 +13,7 @@ public class PromotionRestMapper {
                 .name(domainEntity.getName())
                 .discountPercentage(domainEntity.getDiscountPercentage())
                 .description(domainEntity.getDescription())
+                .active(domainEntity.isActive())
                 .build();
     }
 

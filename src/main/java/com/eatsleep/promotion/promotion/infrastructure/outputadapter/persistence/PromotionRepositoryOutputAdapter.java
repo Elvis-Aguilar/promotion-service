@@ -1,10 +1,8 @@
 package com.eatsleep.promotion.promotion.infrastructure.outputadapter.persistence;
 
 import com.eatsleep.promotion.common.infrastructure.annotation.PersistenceAdapter;
-import com.eatsleep.promotion.promotion.application.ports.output.FindingAllPromotionCustomersIdOutputPort;
-import com.eatsleep.promotion.promotion.application.ports.output.FindingAllPromotionDishesIdOutputPort;
-import com.eatsleep.promotion.promotion.application.ports.output.FindingAllPromotionRoomIdOutputPort;
-import com.eatsleep.promotion.promotion.application.ports.output.StoringPromotionOutputPort;
+import com.eatsleep.promotion.common.infrastructure.exception.BadRequestException;
+import com.eatsleep.promotion.promotion.application.ports.output.*;
 import com.eatsleep.promotion.promotion.domain.model.PromotionDomainEntity;
 import com.eatsleep.promotion.promotion.infrastructure.outputadapter.persistence.entity.PromotionDBEntity;
 import com.eatsleep.promotion.promotion.infrastructure.outputadapter.persistence.mapper.PromotionRepositoryMapper;
@@ -19,7 +17,7 @@ import java.util.UUID;
 @PersistenceAdapter
 @RequiredArgsConstructor
 public class PromotionRepositoryOutputAdapter implements StoringPromotionOutputPort, FindingAllPromotionRoomIdOutputPort, FindingAllPromotionDishesIdOutputPort,
-        FindingAllPromotionCustomersIdOutputPort {
+        FindingAllPromotionCustomersIdOutputPort, FindingPromotionByIdOutputPort {
 
     private final PromotionDBRepository promotionDBRepository;
     private final PromotionRepositoryMapper mapper;
@@ -56,5 +54,13 @@ public class PromotionRepositoryOutputAdapter implements StoringPromotionOutputP
                 .stream()
                 .map(mapper::toDomainEntity)
                 .toList();
+    }
+
+    @Override
+    public PromotionDomainEntity findPromotionById(UUID promotionId) {
+        PromotionDBEntity dbEntity = promotionDBRepository.findById(promotionId)
+                .orElseThrow(() -> new BadRequestException("Promocion no encontrada"));
+
+        return mapper.toDomainEntity(dbEntity);
     }
 }
