@@ -26,6 +26,9 @@ public class PromotionControllerAdapter {
     private final ListAllPromotionByRoomIdInputPort listAllPromotionByRoomIdInputPort;
     private final ListAllPromotionByDishesIdInputPort listAllPromotionByDishesIdInputPort;
     private final FindingPromotionByIdInputPort findingPromotionByIdInputPort;
+    private final ListAllPromotionByCustomerInputPort  listAllPromotionByCustomerInputPort;
+    private final ListAllPromotionByDishesInputPort listAllPromotionByDishesInputPort;
+    private final ListAllPromotionByRoomInputPort listAllPromotionByRoomInputPort;
     private final PromotionRestMapper mapper;
 
     @PostMapping()
@@ -65,6 +68,36 @@ public class PromotionControllerAdapter {
     @GetMapping("/dishes/{dishesID}")
     public ResponseEntity<List<PromotionResponseDto>> getAllPromotionFindByDishesId(@PathVariable UUID dishesID){
         List<PromotionResponseDto> dtoList = listAllPromotionByDishesIdInputPort.listAllPromotionByDishesId(dishesID)
+                .stream()
+                .map(mapper::toResponse)
+                .toList();
+
+        return ResponseEntity.ok().body(dtoList);
+    }
+
+    @GetMapping("/customers")
+    public ResponseEntity<List<PromotionResponseDto>> getAllPromotionFindByCustomer(){
+        List<PromotionResponseDto> dtoList = listAllPromotionByCustomerInputPort.listAllPromotionByCustomer()
+                .stream()
+                .map(mapper::toResponse)
+                .toList();
+
+        return ResponseEntity.ok().body(dtoList);
+    }
+
+    @GetMapping("/rooms")
+    public ResponseEntity<List<PromotionResponseDto>> getAllPromotionFindByRoom(){
+        List<PromotionResponseDto> dtoList = listAllPromotionByRoomInputPort.listAllPromotionByRoom()
+                .stream()
+                .map(mapper::toResponse)
+                .toList();
+
+        return ResponseEntity.ok().body(dtoList);
+    }
+
+    @GetMapping("/dishes")
+    public ResponseEntity<List<PromotionResponseDto>> getAllPromotionFindByDishes(){
+        List<PromotionResponseDto> dtoList = listAllPromotionByDishesInputPort.listAllPromotionByDishes()
                 .stream()
                 .map(mapper::toResponse)
                 .toList();

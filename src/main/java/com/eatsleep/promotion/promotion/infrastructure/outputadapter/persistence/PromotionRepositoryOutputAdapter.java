@@ -17,7 +17,8 @@ import java.util.UUID;
 @PersistenceAdapter
 @RequiredArgsConstructor
 public class PromotionRepositoryOutputAdapter implements StoringPromotionOutputPort, FindingAllPromotionRoomIdOutputPort, FindingAllPromotionDishesIdOutputPort,
-        FindingAllPromotionCustomersIdOutputPort, FindingPromotionByIdOutputPort {
+        FindingAllPromotionCustomersIdOutputPort, FindingPromotionByIdOutputPort, FindingAllPromotionCustomersOutputPort,
+        FindingAllPromotionDishesOutputPort, FindingAllPromotionRoomOutputPort{
 
     private final PromotionDBRepository promotionDBRepository;
     private final PromotionRepositoryMapper mapper;
@@ -62,5 +63,29 @@ public class PromotionRepositoryOutputAdapter implements StoringPromotionOutputP
                 .orElseThrow(() -> new BadRequestException("Promocion no encontrada"));
 
         return mapper.toDomainEntity(dbEntity);
+    }
+
+    @Override
+    public List<PromotionDomainEntity> findAllPromotionCustomers() {
+        return promotionDBRepository.findByCustomerIdNotNullAndActive(true)
+                .stream()
+                .map(mapper::toDomainEntity)
+                .toList();
+    }
+
+    @Override
+    public List<PromotionDomainEntity> findAllPromotionByDishes() {
+        return promotionDBRepository.findByDishIdIsNotNullAndActive(true)
+                .stream()
+                .map(mapper::toDomainEntity)
+                .toList();
+    }
+
+    @Override
+    public List<PromotionDomainEntity> findAllPromotionRoom() {
+        return promotionDBRepository.findByRoomIdNotNullAndActive(true)
+                .stream()
+                .map(mapper::toDomainEntity)
+                .toList();
     }
 }

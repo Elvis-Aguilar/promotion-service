@@ -16,4 +16,11 @@ public interface PromotionDBRepository extends JpaRepository<PromotionDBEntity, 
 
     List<PromotionDBEntity> findByDishIdAndActive(UUID dishId, boolean active);
 
+    List<PromotionDBEntity> findByDishIdIsNotNullAndActive(boolean active);
+
+    List<PromotionDBEntity> findByRoomIdNotNullAndActive(boolean active);
+
+    List<PromotionDBEntity> findByCustomerIdNotNullAndActive(boolean active);
+
+
 }
